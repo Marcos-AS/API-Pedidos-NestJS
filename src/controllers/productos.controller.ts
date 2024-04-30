@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { CreateProductDTO, UpdateProductDTO } from 'src/dtos/productos.dto';
 import { ProductosService } from 'src/services/productos.service';
-//import { createProductDTO } from 'src/dtos/productos.dto';
 
 @Controller('productos')
 export class ProductosController {

@@ -5,17 +5,7 @@ import { Producto } from 'src/entities/producto.entity';
 @Injectable()
 export class ProductosService {
   private idCont = 1;
-  private productos: Producto[] = [
-    {
-      id: 1,
-      nombre: 'Prod A',
-      descripcion: 'desc prod A',
-      precio: 5000,
-      stock: 1,
-      origen: 'China',
-      imagen: '',
-    },
-  ];
+  private productos: Producto[] = [];
 
   findAll() {
     return this.productos;
