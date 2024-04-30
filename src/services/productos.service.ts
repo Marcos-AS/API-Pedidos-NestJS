@@ -54,12 +54,9 @@ export class ProductosService {
   }
 
   update(id: number, payload: UpdateProductDTO) {
-    const index = this.productos.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`El producto #${id} no se encuentra.`);
-    }
     const product = this.findOne(id);
     if (product) {
+      const index = this.productos.findIndex((item) => item.id === id);
       this.productos[index] = {
         ...product, //copia las propiedades de product
         ...payload, //combina con las props. de payload, payload tiene prioridad
