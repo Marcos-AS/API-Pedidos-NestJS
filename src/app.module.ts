@@ -6,7 +6,7 @@ import { ProductosModule } from './productos/productos.module';
 import { ConfigModule } from '@nestjs/config';
 import { environments } from './environments';
 import config from './config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 @Global()
 @Module({
