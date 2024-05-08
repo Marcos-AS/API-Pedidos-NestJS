@@ -26,4 +26,9 @@ export class AppController {
     const name = this.configService.database.name;
     return `Envs: ${apiKey} ${name}`;
   }
+
+  @Get('tareas')
+  getTareas() {
+    return this.appService.getTareas();
+  }
 }

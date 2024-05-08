@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ProductosService } from 'src/productos/services/productos.service';
 import { Pedido } from '../entities/pedido.entity';
 import { Operador } from '../entities/operador.entity';
 import { ConfigService } from '@nestjs/config';
+import { Client } from 'pg';
 
 @Injectable()
 export class OperadoresService {
@@ -19,6 +20,7 @@ export class OperadoresService {
     private productsService: ProductosService,
     //@Inject('APIKEY') private apiKey: string,
     private configService: ConfigService,
+    @Inject('PG') private clientPg: Client,
   ) {}
 
   findAll() {

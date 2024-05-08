@@ -11,8 +11,13 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
 
-const APIKEY = 'DEV-456';
-const APIKEYPROD = 'PROD-12345';
+//const APIKEY = 'DEV-456';
+//const APIKEYPROD = 'PROD-12345';
+
+// client.query('SELECT * FROM tareas', (err, res) => {
+//   console.error(err);
+//   console.log(res.rows);
+// });
 
 @Global()
 @Module({
@@ -35,10 +40,10 @@ const APIKEYPROD = 'PROD-12345';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: 'APIKEY',
-      useValue: process.env.NODE_ENV === 'prod' ? APIKEYPROD : APIKEY,
-    },
+    //{
+    //provide: 'APIKEY',
+    //useValue: process.env.NODE_ENV === 'prod' ? APIKEYPROD : APIKEY,
+    //},
     {
       provide: 'TAREA_ASINC',
       useFactory: async (http: HttpService) => {
