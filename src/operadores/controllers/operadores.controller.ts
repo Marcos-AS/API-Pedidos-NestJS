@@ -7,10 +7,17 @@ import {
   Param,
 } from '@nestjs/common';
 import { OperadoresService } from '../services/operadores.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Operadores')
 @Controller('operadores')
 export class OperadoresController {
   constructor(private operadoresService: OperadoresService) {}
+
+  @Get()
+  getOperators() {
+    return this.operadoresService.findAll();
+  }
 
   @Get(':id/pedidos')
   getOrders(@Param('id', ParseIntPipe) id: number) {

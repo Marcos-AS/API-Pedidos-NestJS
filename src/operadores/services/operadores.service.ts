@@ -6,10 +6,18 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OperadoresService {
-  operadores: Operador[];
+  operadores: Operador[] = [
+    {
+      id: 1,
+      email: 'marcossantangelo@gmail.com',
+      password: '1234',
+      role: 'provider',
+    },
+  ];
 
   constructor(
     private productsService: ProductosService,
+    //@Inject('APIKEY') private apiKey: string,
     private configService: ConfigService,
   ) {}
 
@@ -20,14 +28,8 @@ export class OperadoresService {
     return this.operadores;
   }
 
-  //cambiar
   findOne(id: number) {
-    return {
-      id: id,
-      email: 'marcossantangelo@gmail.com',
-      password: '1234',
-      role: 'provider',
-    };
+    return this.operadores.find((x) => x.id === id);
   }
 
   getOrderByUser(id: number): Pedido {

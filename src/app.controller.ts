@@ -16,6 +16,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('usefactory')
+  getUseFactory(): string {
+    return this.appService.getUseFactory();
+  }
+
   getEnvs(): string {
     const apiKey = this.configService.apiKey;
     const name = this.configService.database.name;

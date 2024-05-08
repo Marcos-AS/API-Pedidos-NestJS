@@ -1,5 +1,7 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Fabricantes')
 @Controller('fabricantes')
 export class FabricantesController {
   @Post()

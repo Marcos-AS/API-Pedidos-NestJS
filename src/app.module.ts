@@ -7,15 +7,19 @@ import { ConfigModule } from '@nestjs/config';
 import { environments } from './environments';
 import config from './config';
 import * as Joi from 'joi';
+import { HttpModule, HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
+import { DatabaseModule } from './database/database.module';
+
+const APIKEY = 'DEV-456';
+const APIKEYPROD = 'PROD-12345';
 
 @Global()
 @Module({
   imports: [
-    OperadoresModule,
-    ProductosModule,
     ConfigModule.forRoot({
       envFilePath: environments[process.env.NODE_ENV] || '.env',
-      load: [config],
+      load: [config], //lee config.ts
       isGlobal: true,
       validationSchema: Joi.object({
         API_KEY: Joi.string().required(),
@@ -23,8 +27,27 @@ import * as Joi from 'joi';
         DATABASE_PORT: Joi.number().required(),
       }),
     }),
+    HttpModule,
+    OperadoresModule,
+    ProductosModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService], //implementacion de los servicios
+  providers: [
+    AppService,
+    {
+      provide: 'APIKEY',
+      useValue: process.env.NODE_ENV === 'prod' ? APIKEYPROD : APIKEY,
+    },
+    {
+      provide: 'TAREA_ASINC',
+      useFactory: async (http: HttpService) => {
+        const req = http.get('https://jsonplaceholder.typicode.com/posts');
+        const tarea = await lastValueFrom(req);
+        return tarea.data;
+      },
+      inject: [HttpService],
+    },
+  ],
 })
 export class AppModule {}
