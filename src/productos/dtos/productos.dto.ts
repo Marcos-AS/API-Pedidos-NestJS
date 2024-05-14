@@ -23,18 +23,18 @@ export class CreateProductDTO {
   @IsPositive()
   readonly precio: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Stock del producto' })
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
   readonly stock: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Origen geográfico del producto' })
   @IsString()
   @IsNotEmpty()
   readonly origen: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'URL del producto' })
   @IsUrl()
   @IsNotEmpty()
   readonly imagen: string;

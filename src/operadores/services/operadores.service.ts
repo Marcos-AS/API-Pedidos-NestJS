@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ProductosService } from 'src/productos/services/productos.service';
-import { Pedido } from '../entities/pedido.entity';
 import { Operador } from '../entities/operador.entity';
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'pg';
@@ -34,12 +33,12 @@ export class OperadoresService {
     return this.operadores.find((x) => x.id === id);
   }
 
-  getOrderByUser(id: number): Pedido {
+  async getOrderByUser(id: number) {
     const operador = this.findOne(id);
     return {
       date: new Date(),
       operador,
-      products: this.productsService.findAll(),
+      products: await this.productsService.findAll(),
     };
   }
 }
