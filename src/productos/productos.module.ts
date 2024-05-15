@@ -7,9 +7,11 @@ import { CategoriasService } from './services/categorias.service';
 import { FabricantesService } from './services/fabricantes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Producto } from './entities/producto.entity';
+import { Fabricante } from './entities/fabricante.entity';
+import { Categoria } from './entities/categoria.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Producto])],
+  imports: [TypeOrmModule.forFeature([Producto, Fabricante, Categoria])],
   controllers: [
     FabricantesController,
     CategoriasController,

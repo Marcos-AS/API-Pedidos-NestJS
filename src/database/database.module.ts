@@ -19,17 +19,17 @@ client.connect();
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        //const { user, host, dbName, password, port } = configService.postgres;
-        const { user, host, name, password, port } = configService.mysql;
+        const { user, host, name, password, port } = configService.postgres;
+        //const { user, host, name, password, port } = configService.mysql;
         return {
-          //type: 'postgres',
-          type: 'mysql',
+          type: 'postgres',
+          //type: 'mysql',
           host,
           port,
           username: user,
           password,
           database: name,
-          synchronize: true,
+          synchronize: false,
           autoLoadEntities: true,
         };
       },
@@ -39,11 +39,11 @@ client.connect();
     {
       provide: 'PG',
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port } = configService.postgres;
+        const { user, host, name, password, port } = configService.postgres;
         const client = new Client({
           user,
           host,
-          database: dbName,
+          database: name,
           password,
           port,
         });

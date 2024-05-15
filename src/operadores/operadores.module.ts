@@ -4,9 +4,12 @@ import { OperadoresController } from './controllers/operadores.controller';
 import { CompradoresController } from './controllers/compradores.controller';
 import { OperadoresService } from './services/operadores.service';
 import { CompradoresService } from './services/compradores.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Operador } from './entities/operador.entity';
+import { Comprador } from './entities/comprador.entity';
 
 @Module({
-  imports: [ProductosModule],
+  imports: [TypeOrmModule.forFeature([Operador, Comprador]), ProductosModule],
   controllers: [OperadoresController, CompradoresController],
   providers: [OperadoresService, CompradoresService],
 })
