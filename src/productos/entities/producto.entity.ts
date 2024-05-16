@@ -23,13 +23,15 @@ export class Producto {
   @Column({ type: 'varchar' })
   imagen: string;
   @CreateDateColumn({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
+    // type: 'timestamptz', //postgres
+    type: 'timestamp', //mysql
+    //default: () => 'CURRENT_TIMESTAMP', //postgres
   })
   createAt: Date;
   @UpdateDateColumn({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
+    //type: 'timestamptz', //no funciona para mysql
+    type: 'timestamp', //mysql
+    //default: () => 'CURRENT_TIMESTAMP', //no funciona para mysql
   })
   updateAt: Date;
 }
