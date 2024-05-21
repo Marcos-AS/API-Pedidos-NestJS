@@ -9,8 +9,8 @@ const client = new Client({
   host: 'localhost',
   database: 'my_db',
   password: '123456',
-  //port: 5432,
-  port: 3307,
+  port: 5432,
+  // port: 3307,
 });
 client.connect();
 
@@ -20,11 +20,11 @@ client.connect();
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        // const { user, host, name, password, port } = configService.postgres;
-        const { user, host, name, password, port } = configService.mysql;
+        const { user, host, name, password, port } = configService.postgres;
+        // const { user, host, name, password, port } = configService.mysql;
         return {
-          // type: 'postgres',
-          type: 'mysql',
+          type: 'postgres',
+          // type: 'mysql',
           host,
           port,
           username: user,

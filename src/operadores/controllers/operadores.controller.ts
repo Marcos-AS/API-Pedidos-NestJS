@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { OperadoresService } from '../services/operadores.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateOperadorDTO } from '../dtos/operador.dto';
 
 @ApiTags('Operadores')
 @Controller('operadores')
@@ -25,10 +26,7 @@ export class OperadoresController {
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: `Nuevo operador!`,
-      payload,
-    };
+  create(@Body() payload: CreateOperadorDTO) {
+    return this.operadoresService.create(payload);
   }
 }

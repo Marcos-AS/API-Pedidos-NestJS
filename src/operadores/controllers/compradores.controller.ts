@@ -1,14 +1,20 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CompradoresService } from '../services/compradores.service';
+import { CreateCompradorDTO } from '../dtos/comprador.dto';
 
 @ApiTags('Compradores')
 @Controller('compradores')
 export class CompradoresController {
+  constructor(private compradorService: CompradoresService) {}
+
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: `Nuevo comprador!`,
-      payload,
-    };
+  create(@Body() payload: CreateCompradorDTO) {
+    return this.compradorService.create(payload);
+  }
+
+  @Get()
+  getCompradores() {
+    return this.compradorService.findAll();
   }
 }

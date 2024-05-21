@@ -8,36 +8,42 @@ import {
 } from 'class-validator';
 export class CreateProductDTO {
   @ApiProperty({ description: 'Nombre del producto' })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly nombre: string;
 
   @ApiProperty({ description: 'Descripcion del producto' })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly descripcion: string;
 
   @ApiProperty({ description: 'Precio del producto' })
-  @IsNumber()
   @IsNotEmpty()
+  @IsNumber()
   @IsPositive()
   readonly precio: number;
 
   @ApiProperty({ description: 'Stock del producto' })
-  @IsNumber()
   @IsNotEmpty()
+  @IsNumber()
   @IsPositive()
   readonly stock: number;
 
   @ApiProperty({ description: 'Origen geográfico del producto' })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly origen: string;
 
   @ApiProperty({ description: 'URL del producto' })
-  @IsUrl()
   @IsNotEmpty()
+  @IsUrl()
   readonly imagen: string;
+
+  @ApiProperty({ description: 'ID del fabricante (FK)' })
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  readonly fabricanteId: number;
 }
 
 export class UpdateProductDTO extends PartialType(

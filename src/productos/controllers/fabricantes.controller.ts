@@ -1,15 +1,15 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { FabricantesService } from '../services/fabricantes.service';
+import { CreateFabricanteDTO } from '../dtos/fabricantes.dto';
 
 @ApiTags('Fabricantes')
 @Controller('fabricantes')
 export class FabricantesController {
+  constructor(private fabService: FabricantesService) {}
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: `Nuevo fabricante!`,
-      payload,
-    };
+  create(@Body() payload: CreateFabricanteDTO) {
+    return this.fabService.create(payload);
   }
 
   @Get(':nombre/productos/:productId')
@@ -21,11 +21,7 @@ export class FabricantesController {
   }
 
   @Get()
-  getProducts(
-    @Query('id') id = 1,
-    @Query('nombre') nombre = 'ACME',
-    @Query('origen') origen: string,
-  ) {
-    return `El fabricante con ID: ${id}, y nombre => ${nombre}. Su procedencia es ${origen}`;
+  getFabricantes() {
+    return this.fabService.findAll();
   }
 }

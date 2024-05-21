@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Fabricante } from './fabricante.entity';
 
 @Entity()
 export class Producto {
@@ -23,15 +25,18 @@ export class Producto {
   @Column({ type: 'varchar' })
   imagen: string;
   @CreateDateColumn({
-    // type: 'timestamptz', //postgres
-    type: 'timestamp', //mysql
-    //default: () => 'CURRENT_TIMESTAMP', //postgres
+    type: 'timestamptz', //postgres
+    // type: 'timestamp', //mysql
+    default: () => 'CURRENT_TIMESTAMP', //postgres
   })
   createAt: Date;
   @UpdateDateColumn({
-    //type: 'timestamptz', //no funciona para mysql
-    type: 'timestamp', //mysql
-    //default: () => 'CURRENT_TIMESTAMP', //no funciona para mysql
+    type: 'timestamptz', //no funciona para mysql
+    // type: 'timestamp', //mysql
+    default: () => 'CURRENT_TIMESTAMP', //no funciona para mysql
   })
   updateAt: Date;
+
+  @ManyToOne(() => Fabricante, (fabricante) => fabricante.products)
+  fabricante: Fabricante;
 }
