@@ -6,15 +6,15 @@ import {
 import { Producto } from 'src/productos/entities/producto.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FabricantesService } from './fabricantes.service';
+import { Categoria } from '../entities/categoria.entity';
+import { Fabricante } from '../entities/fabricante.entity';
 
 @Injectable()
 export class ProductosService {
-  private idCont = 1;
-  private productos: Producto[] = [];
   constructor(
     @InjectRepository(Producto) private productRepo: Repository<Producto>,
-    private fabService: FabricantesService,
+    @InjectRepository(Categoria) private categoryRepo: Repository<Categoria>,
+    @InjectRepository(Fabricante) private fabRepo: Repository<Fabricante>,
   ) {}
 
   findAll() {
@@ -22,7 +22,9 @@ export class ProductosService {
   }
 
   findOne(id: number) {
-    const product = this.productRepo.findOne({ id });
+    const product = this.productRepo.findOne(id, {
+      relations: ['fabricante', 'categorias'],
+    });
     if (!product) {
       throw new NotFoundException(`El producto con id: #${id} no existe`);
     }
@@ -32,8 +34,14 @@ export class ProductosService {
   async create(payload: CreateProductDTO) {
     const newProduct = this.productRepo.create(payload);
     if (payload.fabricanteId) {
-      const fabricante = await this.fabService.findOne(payload.fabricanteId);
+      const fabricante = await this.fabRepo.findOne(payload.fabricanteId);
       newProduct.fabricante = fabricante;
+    }
+    if (payload.categoriasIds) {
+      const categorias = await this.categoryRepo.findByIds(
+        payload.categoriasIds,
+      );
+      newProduct.categorias = categorias;
     }
     return this.productRepo.save(newProduct);
   }
@@ -41,7 +49,7 @@ export class ProductosService {
   async update(id: number, payload: UpdateProductDTO) {
     const product = await this.productRepo.findOne(id);
     if (payload.fabricanteId) {
-      const fabricante = await this.fabService.findOne(payload.fabricanteId);
+      const fabricante = await this.fabRepo.findOne(payload.fabricanteId);
       product.fabricante = fabricante;
     }
     this.productRepo.merge(product, payload);

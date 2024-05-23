@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsUrl,
   IsPositive,
+  IsArray,
 } from 'class-validator';
 export class CreateProductDTO {
   @ApiProperty({ description: 'Nombre del producto' })
@@ -44,6 +45,11 @@ export class CreateProductDTO {
   @IsNumber()
   @IsPositive()
   readonly fabricanteId: number;
+
+  @ApiProperty({ description: 'IDs de las categorías' })
+  @IsNotEmpty()
+  @IsArray()
+  readonly categoriasIds: number[];
 }
 
 export class UpdateProductDTO extends PartialType(

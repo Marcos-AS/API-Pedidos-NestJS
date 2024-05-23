@@ -18,6 +18,21 @@ export class FabricantesService {
     return this.fabricanteRepo.find({
       relations: ['products'],
     });
+    // return this.fabricanteRepo
+    //   .createQueryBuilder('fabricante')
+    //   .leftJoinAndSelect('fabricante.products', 'product')
+    //   .select([
+    //     'fabricante.id',
+    //     'fabricante.nombre',
+    //     'fabricante.direccion',
+    //     'fabricante.email',
+    //     'fabricante.imagen',
+    //     'fabricante.createAt',
+    //     'fabricante.updateAt',
+    //     'product.id',
+    //     'product.nombre',
+    //   ])
+    //   .getMany();
   }
 
   async findOne(id: number) {

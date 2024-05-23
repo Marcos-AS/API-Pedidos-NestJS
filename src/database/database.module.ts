@@ -4,16 +4,6 @@ import { Client } from 'pg';
 import config from 'src/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-const client = new Client({
-  user: 'root',
-  host: 'localhost',
-  database: 'my_db',
-  password: '123456',
-  port: 5432,
-  // port: 3307,
-});
-client.connect();
-
 @Global()
 @Module({
   imports: [
