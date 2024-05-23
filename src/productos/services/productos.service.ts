@@ -59,4 +59,23 @@ export class ProductosService {
   delete(id: number) {
     return this.productRepo.delete(id);
   }
+
+  async removeCategoryFromProduct(prodId: number, categId: number) {
+    const producto = await this.productRepo.findOne(prodId, {
+      relations: ['categorias'],
+    });
+    producto.categorias = producto.categorias.filter(
+      (item) => item.id !== categId, //deja en el array de categorias las distintas al id argumento
+    );
+    return this.productRepo.save(producto);
+  }
+
+  async addCategoryToProduct(prodId: number, categId: number) {
+    const producto = await this.productRepo.findOne(prodId, {
+      relations: ['categorias'],
+    });
+    const categoria = await this.categoryRepo.findOne(categId);
+    producto.categorias.push(categoria);
+    return this.productRepo.save(producto);
+  }
 }

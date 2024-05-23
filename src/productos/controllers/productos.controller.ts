@@ -11,6 +11,7 @@ import {
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
@@ -63,5 +64,21 @@ export class ProductosController {
   @Delete(':idProduct')
   deleteProducto(@Param('idProduct') idProduct: string): any {
     return this.productsService.delete(+idProduct);
+  }
+
+  @Put(':id/category/:categoryId')
+  addCategoryToProduct(
+    @Param('id') id: number,
+    @Param('categoryId', ParseIntPipe) categoryId: number,
+  ) {
+    return this.productsService.addCategoryToProduct(id, categoryId);
+  }
+
+  @Patch(':id/category/:categoryId')
+  removeCategoryFromProduct(
+    @Param('id') id: number,
+    @Param('categoryId', ParseIntPipe) categoryId: number,
+  ) {
+    return this.productsService.removeCategoryFromProduct(id, categoryId);
   }
 }

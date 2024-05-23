@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  ParseIntPipe,
-  Param,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { OperadoresService } from '../services/operadores.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateOperadorDTO } from '../dtos/operador.dto';
@@ -20,10 +13,10 @@ export class OperadoresController {
     return this.operadoresService.findAll();
   }
 
-  @Get(':id/pedidos')
-  getOrders(@Param('id', ParseIntPipe) id: number) {
-    return this.operadoresService.getOrderByUser(id);
-  }
+  // @Get(':id/pedidos')
+  // getOrders(@Param('id', ParseIntPipe) id: number) {
+  //   return this.operadoresService.getOrderByUser(id);
+  // }
 
   @Post()
   create(@Body() payload: CreateOperadorDTO) {

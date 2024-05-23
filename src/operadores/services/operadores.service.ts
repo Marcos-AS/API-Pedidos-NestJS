@@ -56,13 +56,12 @@ export class OperadoresService {
     return this.operatorRepo.delete(id);
   }
 
-  async getOrderByUser(id: number): Promise<Pedido> {
-    const operador = await this.findOne(id);
-    return {
-      id,
-      date: new Date(),
-      operador,
-      products: await this.productsService.findAll(),
-    };
-  }
+  // async getOrderByUser(id: number): Promise<Pedido> {
+  //   const operador = await this.findOne(id);
+  //   return {
+  //     id,
+  //     operador,
+  //     products: await this.productsService.findAll(),
+  //   };
+  // }
 }

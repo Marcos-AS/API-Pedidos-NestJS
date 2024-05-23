@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Operador } from './operador.entity';
+import { Pedido } from './pedido.entity';
 @Entity()
 export class Comprador {
   @PrimaryGeneratedColumn()
@@ -17,20 +19,26 @@ export class Comprador {
   apellido: string;
   @Column({ type: 'varchar' })
   telefono: string;
+
   @CreateDateColumn({
     type: 'timestamptz', //postgres
     // type: 'timestamp', //mysql
     default: () => 'CURRENT_TIMESTAMP', //postgres
   })
   createAt: Date;
+
   @UpdateDateColumn({
     type: 'timestamptz', //no funciona para mysql
     // type: 'timestamp', //mysql
     default: () => 'CURRENT_TIMESTAMP', //no funciona para mysql
   })
   updateAt: Date;
+
   @OneToOne(() => Operador, (operador) => operador.comprador, {
     nullable: true,
   })
   operador: Operador;
+
+  @OneToMany(() => Pedido, (pedido) => pedido.comprador)
+  pedidos: Pedido[];
 }

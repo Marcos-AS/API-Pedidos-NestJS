@@ -1,16 +1,16 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Producto } from '../../productos/entities/producto.entity';
+import { Pedido } from 'src/operadores/entities/pedido.entity';
 
-import { Comprador } from './comprador.entity';
-import { DetallePedido } from 'src/operadores/entities/detallePedido.entity';
 @Entity()
-export class Pedido {
+export class DetallePedido {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,9 +26,12 @@ export class Pedido {
   })
   updateAt: Date;
 
-  @ManyToOne(() => Comprador, (comprador) => comprador.pedidos)
-  comprador: Comprador;
+  @Column({ type: 'int' })
+  cantidad: number;
 
-  @OneToMany(() => DetallePedido, (detalle) => detalle.pedido)
-  detalles: DetallePedido[];
+  @ManyToOne(() => Producto)
+  producto: Producto;
+
+  @ManyToOne(() => Pedido, (pedido) => pedido.detalles)
+  pedido: Pedido;
 }
