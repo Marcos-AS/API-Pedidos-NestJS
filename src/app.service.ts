@@ -1,20 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import config from './config';
 import { ConfigType } from '@nestjs/config';
-import { Client } from 'pg';
+//import { Client } from 'pg';
+import { Db } from 'mongodb';
 
 @Injectable()
 export class AppService {
   constructor(
-    //@Inject('APIKEY') private apiKey: string,
-    //private config: ConfigService,
     @Inject(config.KEY) private configServ: ConfigType<typeof config>,
     @Inject('TAREA_ASINC') private tarea: any[],
-    @Inject('PG') private clientPg: Client,
+    //@Inject('PG') private clientPg: Client,
+    @Inject('MONGO') private mongoDb: Db,
   ) {}
+
   getHello(): string {
-    //const apiKey = this.config.get<string>('API_KEY');
-    //const dbName = this.config.get('DATABASE_NAME');
     const apiKey = this.configServ.apiKey;
     const dbName = this.configServ.database.name;
     const dbPort = this.configServ.database.port;
@@ -27,13 +26,15 @@ export class AppService {
   }
 
   getTareas() {
-    return new Promise((resolve, reject) => {
-      this.clientPg.query('SELECT * FROM tareas', (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res.rows);
-      });
-    });
+    // return new Promise((resolve, reject) => {
+    //   this.clientPg.query('SELECT * FROM tareas', (err, res) => {
+    //     if (err) {
+    //       reject(err);
+    //     }
+    //     resolve(res.rows);
+    //   });
+    // });
+    const tasksCollection = this.mongoDb.collection('Tasks');
+    return tasksCollection.find().toArray();
   }
 }

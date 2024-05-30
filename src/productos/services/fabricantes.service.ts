@@ -36,7 +36,8 @@ export class FabricantesService {
   }
 
   async findOne(id: number) {
-    const fabricante = await this.fabricanteRepo.findOne(id, {
+    const fabricante = await this.fabricanteRepo.findOne({
+      where: { id },
       relations: ['products'],
     });
     if (!fabricante) {

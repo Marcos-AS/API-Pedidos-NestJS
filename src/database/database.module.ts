@@ -3,13 +3,14 @@ import { ConfigType } from '@nestjs/config';
 import { Client } from 'pg';
 import config from 'src/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongoClient } from 'mongodb';
 
 @Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
-      useFactory: (configService: ConfigType<typeof config>) => {
+      useFactory: async (configService: ConfigType<typeof config>) => {
         const { user, host, name, password, port } = configService.postgres;
         // const { user, host, name, password, port } = configService.mysql;
         return {
@@ -43,7 +44,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       },
       inject: [config.KEY],
     },
+    {
+      provide: 'MONGO',
+      useFactory: async (configService: ConfigType<typeof config>) => {
+        const { user, host, name, password, port, connection } =
+          configService.mongo;
+        const uri = `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`;
+        const client = new MongoClient(uri);
+        await client.connect();
+        const database = client.db(name);
+        return database;
+      },
+      inject: [config.KEY],
+    },
   ],
-  exports: ['PG', TypeOrmModule],
+  exports: ['PG', 'MONGO', TypeOrmModule],
 })
 export class DatabaseModule {}

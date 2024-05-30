@@ -17,7 +17,7 @@ export class PedidosService {
   }
 
   async findOne(id: number) {
-    const pedido = await this.pedidoRepo.findOne(id);
+    const pedido = await this.pedidoRepo.findOneBy({ id });
     if (!pedido) {
       throw new NotFoundException(`El pedido #${id} no existe.`);
     }
@@ -28,16 +28,20 @@ export class PedidosService {
     //const pedido = this.pedidoRepo.create(data);
     const pedido = new Pedido();
     if (data.compradorId) {
-      const customer = await this.compradorRepo.findOne(data.compradorId);
+      const customer = await this.compradorRepo.findOneBy({
+        id: data.compradorId,
+      });
       pedido.comprador = customer;
     }
     return this.pedidoRepo.save(pedido);
   }
 
   async update(id: number, changes: UpdatePedidoDTO) {
-    const pedido = await this.pedidoRepo.findOne(id);
+    const pedido = await this.pedidoRepo.findOneBy({ id });
     if (changes.compradorId) {
-      const customer = await this.compradorRepo.findOne(changes.compradorId);
+      const customer = await this.compradorRepo.findOneBy({
+        id: changes.compradorId,
+      });
       pedido.comprador = customer;
     }
     return this.pedidoRepo.save(pedido);

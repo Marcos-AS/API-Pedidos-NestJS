@@ -15,7 +15,7 @@ export class CompradoresService {
   }
 
   async findOne(id: number) {
-    const comprador = await this.compradorRepo.findOne(id);
+    const comprador = await this.compradorRepo.findOneBy({ id });
     if (!comprador) {
       throw new NotFoundException(`Comprador #${id} no encontrado.`);
     }

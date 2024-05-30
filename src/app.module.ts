@@ -10,14 +10,18 @@ import * as Joi from 'joi';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
+// import { MongoClient } from 'mongodb';
 
-//const APIKEY = 'DEV-456';
-//const APIKEYPROD = 'PROD-12345';
-
-// client.query('SELECT * FROM tareas', (err, res) => {
-//   console.error(err);
-//   console.log(res.rows);
-// });
+// const uri = 'mongodb://mongo:123456@localhost:27017/?authMechanism=DEFAULT';
+// const client = new MongoClient(uri);
+// async function run() {
+//   await client.connect();
+//   const database = client.db('admin');
+//   const taskCollection = database.collection('Tasks');
+//   const tasks = await taskCollection.find().toArray();
+//   console.log(tasks);
+// }
+// run();
 
 @Global()
 @Module({
@@ -40,10 +44,6 @@ import { DatabaseModule } from './database/database.module';
   controllers: [AppController],
   providers: [
     AppService,
-    //{
-    //provide: 'APIKEY',
-    //useValue: process.env.NODE_ENV === 'prod' ? APIKEYPROD : APIKEY,
-    //},
     {
       provide: 'TAREA_ASINC',
       useFactory: async (http: HttpService) => {

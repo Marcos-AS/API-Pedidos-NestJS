@@ -16,8 +16,8 @@ export class DetallePedidoService {
   ) {}
 
   async create(data: CreateDetallePedidoDTO) {
-    const pedido = await this.pedidoRepo.findOne(data.pedidoId);
-    const producto = await this.prodRepo.findOne(data.productoId);
+    const pedido = await this.pedidoRepo.findOneBy({ id: data.pedidoId });
+    const producto = await this.prodRepo.findOneBy({ id: data.productoId });
     const detalle = new DetallePedido();
     detalle.pedido = pedido;
     detalle.producto = producto;

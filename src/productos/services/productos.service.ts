@@ -5,7 +5,7 @@ import {
 } from 'src/productos/dtos/productos.dto';
 import { Producto } from 'src/productos/entities/producto.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Categoria } from '../entities/categoria.entity';
 import { Fabricante } from '../entities/fabricante.entity';
 
@@ -22,7 +22,8 @@ export class ProductosService {
   }
 
   findOne(id: number) {
-    const product = this.productRepo.findOne(id, {
+    const product = this.productRepo.findOne({
+      where: { id },
       relations: ['fabricante', 'categorias'],
     });
     if (!product) {
@@ -34,22 +35,26 @@ export class ProductosService {
   async create(payload: CreateProductDTO) {
     const newProduct = this.productRepo.create(payload);
     if (payload.fabricanteId) {
-      const fabricante = await this.fabRepo.findOne(payload.fabricanteId);
+      const fabricante = await this.fabRepo.findOneBy({
+        id: payload.fabricanteId,
+      });
       newProduct.fabricante = fabricante;
     }
     if (payload.categoriasIds) {
-      const categorias = await this.categoryRepo.findByIds(
-        payload.categoriasIds,
-      );
+      const categorias = await this.categoryRepo.findBy({
+        id: In(payload.categoriasIds),
+      });
       newProduct.categorias = categorias;
     }
     return this.productRepo.save(newProduct);
   }
 
   async update(id: number, payload: UpdateProductDTO) {
-    const product = await this.productRepo.findOne(id);
+    const product = await this.productRepo.findOneBy({ id });
     if (payload.fabricanteId) {
-      const fabricante = await this.fabRepo.findOne(payload.fabricanteId);
+      const fabricante = await this.fabRepo.findOneBy({
+        id: payload.fabricanteId,
+      });
       product.fabricante = fabricante;
     }
     this.productRepo.merge(product, payload);
@@ -61,7 +66,8 @@ export class ProductosService {
   }
 
   async removeCategoryFromProduct(prodId: number, categId: number) {
-    const producto = await this.productRepo.findOne(prodId, {
+    const producto = await this.productRepo.findOne({
+      where: { id: prodId },
       relations: ['categorias'],
     });
     producto.categorias = producto.categorias.filter(
@@ -71,10 +77,11 @@ export class ProductosService {
   }
 
   async addCategoryToProduct(prodId: number, categId: number) {
-    const producto = await this.productRepo.findOne(prodId, {
+    const producto = await this.productRepo.findOne({
+      where: { id: prodId },
       relations: ['categorias'],
     });
-    const categoria = await this.categoryRepo.findOne(categId);
+    const categoria = await this.categoryRepo.findOneBy({ id: categId });
     producto.categorias.push(categoria);
     return this.productRepo.save(producto);
   }

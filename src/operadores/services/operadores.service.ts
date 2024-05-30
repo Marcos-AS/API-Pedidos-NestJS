@@ -1,12 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ProductosService } from 'src/productos/services/productos.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Operador } from '../entities/operador.entity';
-import { ConfigService } from '@nestjs/config';
-import { Client } from 'pg';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOperadorDTO, UpdateOperadorDTO } from '../dtos/operador.dto';
-import { Pedido } from '../entities/pedido.entity';
 import { CompradoresService } from './compradores.service';
 
 @Injectable()
@@ -14,9 +10,6 @@ export class OperadoresService {
   operadores: Operador[] = [];
 
   constructor(
-    private productsService: ProductosService,
-    private configService: ConfigService,
-    @Inject('PG') private clientPg: Client,
     @InjectRepository(Operador) private operatorRepo: Repository<Operador>,
     private compradorService: CompradoresService,
   ) {}
@@ -28,7 +21,8 @@ export class OperadoresService {
   }
 
   async findOne(id: number) {
-    const operador = await this.operatorRepo.findOne(id, {
+    const operador = await this.operatorRepo.findOne({
+      where: { id },
       relations: ['comprador'],
     });
     if (!operador) {

@@ -15,7 +15,7 @@ export class CategoriasService {
   }
 
   async findOne(id: number) {
-    const category = await this.categoryRepo.findOne(id);
+    const category = await this.categoryRepo.findOneBy({ id });
     if (!category) {
       throw new NotFoundException(`Categoría #${id} no existe.`);
     }

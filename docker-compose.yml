@@ -35,3 +35,13 @@ services:
       - PMA_HOST=mysqlcali
     ports:
       - '8080:80'
+  my-mongo:
+    image: mongo:5.0
+    environment:
+      - MONGO_INITDB_DATABASE=nestjs_mongo
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo_data:/data/db
