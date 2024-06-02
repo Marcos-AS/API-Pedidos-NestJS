@@ -21,7 +21,7 @@ export class ProductosService {
     return this.productRepo.find();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     const product = this.productRepo.findOne({
       where: { id },
       relations: ['fabricante', 'categorias'],
@@ -32,32 +32,32 @@ export class ProductosService {
     return product;
   }
 
-  async create(payload: CreateProductDTO) {
-    const newProduct = this.productRepo.create(payload);
-    if (payload.fabricanteId) {
+  async create(data: CreateProductDTO) {
+    const newProduct = this.productRepo.create(data);
+    if (data.fabricanteId) {
       const fabricante = await this.fabRepo.findOneBy({
-        id: payload.fabricanteId,
+        id: data.fabricanteId,
       });
       newProduct.fabricante = fabricante;
     }
-    if (payload.categoriasIds) {
+    if (data.categoriasIds) {
       const categorias = await this.categoryRepo.findBy({
-        id: In(payload.categoriasIds),
+        id: In(data.categoriasIds),
       });
       newProduct.categorias = categorias;
     }
     return this.productRepo.save(newProduct);
   }
 
-  async update(id: number, payload: UpdateProductDTO) {
+  async update(id: number, changes: UpdateProductDTO) {
     const product = await this.productRepo.findOneBy({ id });
-    if (payload.fabricanteId) {
+    if (changes.fabricanteId) {
       const fabricante = await this.fabRepo.findOneBy({
-        id: payload.fabricanteId,
+        id: changes.fabricanteId,
       });
       product.fabricante = fabricante;
     }
-    this.productRepo.merge(product, payload);
+    this.productRepo.merge(product, changes);
     return this.productRepo.save(product);
   }
 

@@ -55,14 +55,14 @@ export class ProductosController {
 
   @Put(':idProduct')
   update(
-    @Param('idProduct') idProduct: string,
+    @Param('idProduct', ParseIntPipe) idProduct: string,
     @Body() payload: UpdateProductDTO,
   ) {
     return this.productsService.update(+idProduct, payload);
   }
 
   @Delete(':idProduct')
-  deleteProducto(@Param('idProduct') idProduct: string): any {
+  deleteProducto(@Param('idProduct', ParseIntPipe) idProduct: string) {
     return this.productsService.delete(+idProduct);
   }
 

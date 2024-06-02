@@ -4,6 +4,7 @@ import { Client } from 'pg';
 import config from 'src/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongoClient } from 'mongodb';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Global()
 @Module({
@@ -23,6 +24,19 @@ import { MongoClient } from 'mongodb';
           database: name,
           synchronize: false,
           autoLoadEntities: true,
+        };
+      },
+    }),
+    MongooseModule.forRootAsync({
+      inject: [config.KEY],
+      useFactory: (configService: ConfigType<typeof config>) => {
+        const { connection, user, password, host, port, name } =
+          configService.mongo;
+        return {
+          uri: `${connection}://${host}:${port}`,
+          user,
+          pass: password,
+          dbName: name,
         };
       },
     }),
@@ -58,6 +72,6 @@ import { MongoClient } from 'mongodb';
       inject: [config.KEY],
     },
   ],
-  exports: ['PG', 'MONGO', TypeOrmModule],
+  exports: ['PG', 'MONGO', TypeOrmModule, MongooseModule],
 })
 export class DatabaseModule {}

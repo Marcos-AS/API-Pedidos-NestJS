@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOperadorDTO, UpdateOperadorDTO } from '../dtos/operador.dto';
 import { CompradoresService } from './compradores.service';
+import { ProductoService } from 'src/productos/services/producto.service';
 
 @Injectable()
 export class OperadoresService {
@@ -12,6 +13,7 @@ export class OperadoresService {
   constructor(
     @InjectRepository(Operador) private operatorRepo: Repository<Operador>,
     private compradorService: CompradoresService,
+    private productsService: ProductoService,
   ) {}
 
   async findAll() {
@@ -50,12 +52,12 @@ export class OperadoresService {
     return this.operatorRepo.delete(id);
   }
 
-  // async getOrderByUser(id: number): Promise<Pedido> {
-  //   const operador = await this.findOne(id);
-  //   return {
-  //     id,
-  //     operador,
-  //     products: await this.productsService.findAll(),
-  //   };
-  // }
+  async getOrderByUser(id: number) {
+    const operador = await this.findOne(id);
+    return {
+      id,
+      operador,
+      products: await this.productsService.findAll(),
+    };
+  }
 }

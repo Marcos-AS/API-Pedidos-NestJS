@@ -6,6 +6,9 @@ import {
   IsUrl,
   IsPositive,
   IsArray,
+  IsOptional,
+  Min,
+  ValidateIf,
 } from 'class-validator';
 export class CreateProductDTO {
   @ApiProperty({ description: 'Nombre del producto' })
@@ -41,12 +44,14 @@ export class CreateProductDTO {
   readonly imagen: string;
 
   @ApiProperty({ description: 'ID del fabricante (FK)' })
+  @IsOptional()
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()
   readonly fabricanteId: number;
 
   @ApiProperty({ description: 'IDs de las categorías' })
+  @IsOptional()
   @IsNotEmpty()
   @IsArray()
   readonly categoriasIds: number[];
@@ -55,3 +60,21 @@ export class CreateProductDTO {
 export class UpdateProductDTO extends PartialType(
   OmitType(CreateProductDTO, ['nombre']),
 ) {}
+
+export class FilterProductsDTO {
+  @IsOptional()
+  @IsPositive()
+  limit: number;
+
+  @IsOptional()
+  @Min(0)
+  offset: number;
+
+  @IsOptional()
+  @Min(0)
+  precioMinimo: number;
+
+  @ValidateIf((params) => params.precioMinimo)
+  @IsPositive()
+  precioMaximo: number;
+}
