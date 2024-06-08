@@ -13,6 +13,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Producto } from './entities/producto.entity';
 import { ProductoService } from './services/producto.service';
 import { ProductoController } from './controllers/producto.controller';
+import { CategoriaService } from './services/categoria.service';
+import { FabricanteService } from './services/fabricante.service';
+import { Categorias, CategoriaSchema } from './entities/categorias.entity';
+import { Fabricantes, FabricanteSchema } from './entities/fabricantes.entity';
 
 @Module({
   imports: [
@@ -21,6 +25,14 @@ import { ProductoController } from './controllers/producto.controller';
       {
         name: Productos.name,
         schema: ProductoSchema,
+      },
+      {
+        name: Categorias.name,
+        schema: CategoriaSchema,
+      },
+      {
+        name: Fabricantes.name,
+        schema: FabricanteSchema,
       },
     ]),
   ],
@@ -34,8 +46,9 @@ import { ProductoController } from './controllers/producto.controller';
     ProductosService,
     CategoriasService,
     FabricantesService,
-    ProductoService, //mongo
-    
+    ProductoService,
+    CategoriaService,
+    FabricanteService, //mongo
   ],
   exports: [ProductosService, ProductoService],
 })

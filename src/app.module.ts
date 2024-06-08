@@ -11,6 +11,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
 // import { MongoClient } from 'mongodb';
+import { AuthModule } from './auth/auth.module';
 
 // const uri = 'mongodb://mongo:123456@localhost:27017/?authMechanism=DEFAULT';
 // const client = new MongoClient(uri);
@@ -40,6 +41,7 @@ import { DatabaseModule } from './database/database.module';
     OperadoresModule,
     ProductosModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

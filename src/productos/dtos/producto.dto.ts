@@ -1,17 +1,17 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
   IsNumber,
   IsUrl,
   IsPositive,
-  IsArray,
   IsOptional,
-  Min,
-  ValidateIf,
+  ValidateNested,
+  IsMongoId,
 } from 'class-validator';
+import { CreateCategoriaDTO } from './categorias.dto';
 
-export class CreateProductDTO {
+export class CreateProductMongoDTO {
   @ApiProperty({ description: 'Nombre del producto' })
   @IsNotEmpty()
   @IsString()
@@ -44,37 +44,15 @@ export class CreateProductDTO {
   @IsUrl()
   readonly imagen: string;
 
-  @ApiProperty({ description: 'ID del fabricante (FK)' })
+  @ApiProperty()
   @IsOptional()
   @IsNotEmpty()
-  @IsPositive()
-  readonly fabricanteId: number;
+  @ValidateNested() //valida DTOs embebidos
+  readonly categoria: CreateCategoriaDTO;
 
-  @ApiProperty({ description: 'IDs de las categorías' })
+  @ApiProperty()
   @IsOptional()
   @IsNotEmpty()
-  @IsArray()
-  readonly categoriasIds: number[];
-}
-
-export class UpdateProductDTO extends PartialType(
-  OmitType(CreateProductDTO, ['nombre']),
-) {}
-
-export class FilterProductsDTO {
-  @IsOptional()
-  @IsPositive()
-  limit: number;
-
-  @IsOptional()
-  @Min(0)
-  offset: number;
-
-  @IsOptional()
-  @Min(0)
-  precioMinimo: number;
-
-  @ValidateIf((params) => params.precioMinimo)
-  @IsPositive()
-  precioMaximo: number;
+  @IsMongoId()
+  readonly fabricante: string; //primero deben haber insertados fabricantes
 }

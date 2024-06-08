@@ -1,21 +1,19 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
   Get,
-  Put,
   Param,
+  Post,
+  Put,
   Delete,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { CompradoresService } from '../services/compradores.service';
+import { CompradorService } from '../services/comprador.service';
 import { CreateCompradorDTO, UpdateCompradorDTO } from '../dtos/comprador.dto';
-import { ParseIntPipe } from 'src/common/parse-int.pipe';
+import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 
-@ApiTags('Compradores')
-@Controller('compradores')
-export class CompradoresController {
-  constructor(private compradoresService: CompradoresService) {}
+@Controller('comprador')
+export class CompradorController {
+  constructor(private compradoresService: CompradorService) {}
 
   @Post()
   create(@Body() payload: CreateCompradorDTO) {
@@ -28,20 +26,20 @@ export class CompradoresController {
   }
 
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number) {
+  getOne(@Param('id', MongoIdPipe) id: string) {
     return this.compradoresService.findOne(id);
   }
 
   @Put(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateCompradorDTO,
   ) {
     return this.compradoresService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id', MongoIdPipe) id: string) {
     return this.compradoresService.delete(id);
   }
 }

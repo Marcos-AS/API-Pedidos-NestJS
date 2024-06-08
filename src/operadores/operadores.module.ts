@@ -14,6 +14,15 @@ import { DetallePedidoService } from './services/detalle-pedido.service';
 import { DetallePedidoController } from './controllers/detalle-pedido.controller';
 import { Producto } from 'src/productos/entities/producto.entity';
 import { PedidosController } from './controllers/pedidos.controller';
+import { CompradorService } from './services/comprador.service';
+import { PedidoService } from './services/pedido.service';
+import { OperadorService } from './services/operador.service';
+import { CompradorController } from './controllers/comprador.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Compradores, CompradorSchema } from './entities/compradores.entity';
+import { Pedidos, PedidoSchema } from './entities/pedidos.entity';
+import { Operadores, OperadorSchema } from './entities/operadores.entity';
+import { PedidoController } from './controllers/pedido.controller';
 
 @Module({
   imports: [
@@ -24,6 +33,20 @@ import { PedidosController } from './controllers/pedidos.controller';
       DetallePedido,
       Producto,
     ]),
+    MongooseModule.forFeature([
+      {
+        name: Compradores.name,
+        schema: CompradorSchema,
+      },
+      {
+        name: Pedidos.name,
+        schema: PedidoSchema,
+      },
+      {
+        name: Operadores.name,
+        schema: OperadorSchema,
+      },
+    ]),
     ProductosModule,
   ],
   controllers: [
@@ -31,12 +54,17 @@ import { PedidosController } from './controllers/pedidos.controller';
     CompradoresController,
     DetallePedidoController,
     PedidosController,
+    CompradorController,
+    PedidoController,
   ],
   providers: [
     OperadoresService,
     CompradoresService,
     PedidosService,
     DetallePedidoService,
+    CompradorService,
+    PedidoService,
+    OperadorService,
   ],
 })
 export class OperadoresModule {}

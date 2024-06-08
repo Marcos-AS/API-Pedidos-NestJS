@@ -12,10 +12,13 @@ import { Comprador } from './comprador.entity';
 export class Operador {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column({ type: 'varchar' })
   email: string;
+
   @Column({ type: 'varchar' })
   password: string;
+
   @Column({ type: 'varchar' })
   role: string;
 

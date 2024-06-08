@@ -22,9 +22,14 @@ export class ProductoService {
       if (precioMinimo && precioMaximo) {
         filters.precio = { $gte: precioMinimo, $lte: precioMaximo };
       }
-      return this.productModel.find(filters).skip(offset).limit(limit).exec();
+      return this.productModel
+        .find(filters)
+        .populate('fabricante') //trae todos los atributos de esta entidad, no solo el ID que esta en producto
+        .skip(offset)
+        .limit(limit)
+        .exec();
     }
-    return this.productModel.find().exec();
+    return this.productModel.find().populate('fabricante').exec();
   }
 
   async findOne(id: number) {

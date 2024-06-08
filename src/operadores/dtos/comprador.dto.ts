@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCompradorDTO {
   @ApiProperty({ description: 'Nombre del comprador' })
@@ -16,6 +16,11 @@ export class CreateCompradorDTO {
   @IsNotEmpty()
   @IsString()
   readonly telefono: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsArray()
+  readonly direcciones: any;
 }
 
 export class UpdateCompradorDTO extends PartialType(CreateCompradorDTO) {}
