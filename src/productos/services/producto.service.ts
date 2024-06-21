@@ -4,7 +4,7 @@ import {
   FilterProductsDTO,
   UpdateProductDTO,
 } from 'src/productos/dtos/productos.dto';
-import { Productos } from 'src/productos/entities/productos.entity';
+import { Productos } from '../entities/productos.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 
@@ -32,7 +32,7 @@ export class ProductoService {
     return this.productModel.find().populate('fabricante').exec();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const product = await this.productModel.findById(id).exec();
     if (!product) {
       throw new NotFoundException(`El producto con id: #${id} no existe`);

@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 import { Comprador } from './comprador.entity';
-import { DetallePedido } from 'src/operadores/entities/detallePedido.entity';
+import { DetallePedido } from '../entities/detallePedido.entity';
 @Entity()
 export class Pedido {
   @PrimaryGeneratedColumn()

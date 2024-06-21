@@ -23,6 +23,7 @@ import { Compradores, CompradorSchema } from './entities/compradores.entity';
 import { Pedidos, PedidoSchema } from './entities/pedidos.entity';
 import { Operadores, OperadorSchema } from './entities/operadores.entity';
 import { PedidoController } from './controllers/pedido.controller';
+import { OperadorController } from './controllers/operador.controller';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { PedidoController } from './controllers/pedido.controller';
     PedidosController,
     CompradorController,
     PedidoController,
+    OperadorController,
   ],
   providers: [
     OperadoresService,
@@ -66,5 +68,6 @@ import { PedidoController } from './controllers/pedido.controller';
     PedidoService,
     OperadorService,
   ],
+  exports: [OperadorService],
 })
 export class OperadoresModule {}

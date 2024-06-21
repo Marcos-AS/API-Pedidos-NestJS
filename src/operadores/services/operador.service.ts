@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Operadores } from '../entities/operadores.entity';
 import { Model } from 'mongoose';
 import { CreateOperadorDTO, UpdateOperadorDTO } from '../dtos/operador.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class OperadorService {
@@ -22,9 +24,17 @@ export class OperadorService {
     return operador;
   }
 
-  create(data: CreateOperadorDTO) {
+  async create(data: CreateOperadorDTO): Promise<Partial<Operadores>> {
     const operador = new this.operadorModel(data);
-    return operador.save();
+    const hashPassword = await bcrypt.hash(operador.password, 10);
+    operador.password = hashPassword;
+    const model = await operador.save();
+    const { password, ...rta } = model.toJSON();
+    return rta;
+  }
+
+  findByEmail(email: string) {
+    return this.operadorModel.findOne({ email }).exec();
   }
 
   async update(id: string, changes: UpdateOperadorDTO) {

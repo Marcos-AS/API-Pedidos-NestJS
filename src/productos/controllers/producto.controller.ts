@@ -9,40 +9,45 @@ import {
   Query,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
+//import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MongoIdPipe } from 'src/common/mongo-id.pipe';
+import { Public } from '../../auth/decorators/public.decorator';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
+import { Role } from '../../auth/models/roles.model';
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
 import {
   CreateProductDTO,
   FilterProductsDTO,
   UpdateProductDTO,
-} from 'src/productos/dtos/productos.dto';
-import { ProductoService } from 'src/productos/services/producto.service';
+} from '../dtos/productos.dto';
+import { ProductoService } from '../services/producto.service';
 
 @ApiTags('Productos')
+//@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('producto') //mongo
 export class ProductoController {
   constructor(private productsService: ProductoService) {}
 
   @ApiOperation({ summary: 'Obtener lista de productos' })
+  @Public()
   @Get()
   getProducts(@Query() params: FilterProductsDTO) {
     return this.productsService.findAll(params);
   }
 
-  @Get('filter')
-  getProductFilter() {
-    return {
-      message: `Soy un filter`,
-    };
-  }
-
+  @Public()
   @Get(':idProduct')
   @HttpCode(HttpStatus.ACCEPTED)
   getProduct(@Param('idProduct', MongoIdPipe) idProduct: string) {
-    return this.productsService.findOne(+idProduct);
+    return this.productsService.findOne(idProduct);
   }
 
+  @Roles(Role.ADMIN)
   @Post()
   create(@Body() payload: CreateProductDTO) {
     return this.productsService.create(payload);

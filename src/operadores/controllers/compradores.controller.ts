@@ -10,7 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CompradoresService } from '../services/compradores.service';
 import { CreateCompradorDTO, UpdateCompradorDTO } from '../dtos/comprador.dto';
-import { ParseIntPipe } from 'src/common/parse-int.pipe';
+import { ParseIntPipe } from '../../common/parse-int.pipe';
 
 @ApiTags('Compradores')
 @Controller('compradores')

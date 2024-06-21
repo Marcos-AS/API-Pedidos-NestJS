@@ -13,7 +13,7 @@ import {
   CreatePedidoMongoDTO,
   UpdatePedidoMongoDTO,
 } from '../dtos/pedido.dto';
-import { MongoIdPipe } from 'src/common/mongo-id.pipe';
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
 
 @Controller('pedido')
 export class PedidoController {

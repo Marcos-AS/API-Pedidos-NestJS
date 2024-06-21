@@ -10,19 +10,7 @@ import * as Joi from 'joi';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
-// import { MongoClient } from 'mongodb';
 import { AuthModule } from './auth/auth.module';
-
-// const uri = 'mongodb://mongo:123456@localhost:27017/?authMechanism=DEFAULT';
-// const client = new MongoClient(uri);
-// async function run() {
-//   await client.connect();
-//   const database = client.db('admin');
-//   const taskCollection = database.collection('Tasks');
-//   const tasks = await taskCollection.find().toArray();
-//   console.log(tasks);
-// }
-// run();
 
 @Global()
 @Module({

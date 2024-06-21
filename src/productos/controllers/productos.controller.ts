@@ -14,11 +14,8 @@ import {
   Patch,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import {
-  CreateProductDTO,
-  UpdateProductDTO,
-} from 'src/productos/dtos/productos.dto';
-import { ProductosService } from 'src/productos/services/productos.service';
+import { CreateProductDTO, UpdateProductDTO } from '../dtos/productos.dto';
+import { ProductosService } from '../services/productos.service';
 
 @ApiTags('Productos')
 @Controller('productos')

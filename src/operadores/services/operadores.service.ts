@@ -3,8 +3,8 @@ import { Operador } from '../entities/operador.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOperadorDTO, UpdateOperadorDTO } from '../dtos/operador.dto';
-import { CompradoresService } from './compradores.service';
-import { ProductoService } from 'src/productos/services/producto.service';
+import { Comprador } from '../entities/comprador.entity';
+import { Producto } from '../../productos/entities/producto.entity';
 
 @Injectable()
 export class OperadoresService {
@@ -12,8 +12,8 @@ export class OperadoresService {
 
   constructor(
     @InjectRepository(Operador) private operatorRepo: Repository<Operador>,
-    private compradorService: CompradoresService,
-    private productsService: ProductoService,
+    @InjectRepository(Comprador) private compradorRepo: Repository<Comprador>,
+    @InjectRepository(Producto) private productoRepo: Repository<Producto>,
   ) {}
 
   async findAll() {
@@ -36,7 +36,9 @@ export class OperadoresService {
   async create(data: CreateOperadorDTO) {
     const newOperador = this.operatorRepo.create(data);
     if (data.compradorId) {
-      const comprador = await this.compradorService.findOne(data.compradorId);
+      const comprador = await this.compradorRepo.findOne({
+        where: { id: data.compradorId },
+      });
       newOperador.comprador = comprador;
     }
     return await this.operatorRepo.save(newOperador);
@@ -57,7 +59,7 @@ export class OperadoresService {
     return {
       id,
       operador,
-      products: await this.productsService.findAll(),
+      products: await this.productoRepo.find(),
     };
   }
 }

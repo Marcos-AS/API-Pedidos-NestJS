@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, Document, Types } from 'mongoose';
-import { Productos } from 'src/productos/entities/productos.entity';
+import { Productos } from '../../productos/entities/productos.entity';
 import { Compradores } from './compradores.entity';
 
 @Schema()

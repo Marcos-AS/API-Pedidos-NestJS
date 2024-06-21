@@ -3,7 +3,7 @@ import {
   CreateProductDTO,
   UpdateProductDTO,
 } from 'src/productos/dtos/productos.dto';
-import { Producto } from 'src/productos/entities/producto.entity';
+import { Producto } from '../entities/producto.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Categoria } from '../entities/categoria.entity';

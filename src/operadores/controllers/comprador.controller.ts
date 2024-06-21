@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { CompradorService } from '../services/comprador.service';
 import { CreateCompradorDTO, UpdateCompradorDTO } from '../dtos/comprador.dto';
-import { MongoIdPipe } from 'src/common/mongo-id.pipe';
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
 
 @Controller('comprador')
 export class CompradorController {
